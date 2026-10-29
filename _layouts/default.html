@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{% if page.excerpt and page.layout == 'post' %}{{ page.excerpt | strip_html | strip | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+  <meta name="theme-color" content="#1a4d2e">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+{%- comment -%} Aktivna stavka navigacije (ista logika za gornju i donju navigaciju) {%- endcomment -%}
+{%- assign nav_sec = "" -%}
+{%- if page.url == "/" -%}{%- assign nav_sec = "vijesti" -%}
+{%- elsif page.url == "/dogadaji/" -%}{%- assign nav_sec = "dogadaji" -%}
+{%- elsif page.url == "/kategorije/" -%}{%- assign nav_sec = "kategorije" -%}
+{%- elsif page.url == "/pretraga/" -%}{%- assign nav_sec = "trazi" -%}
+{%- elsif page.url == "/povijest/" -%}{%- assign nav_sec = "povijest" -%}
+{%- elsif page.url == "/zaposlenje/" -%}{%- assign nav_sec = "zaposlenje" -%}
+{%- elsif page.layout == "kategorija" -%}{%- assign nav_sec = "kategorije" -%}
+{%- elsif page.layout == "post" -%}
+  {%- if page.type == "Povijest" or page.categories contains "POVIJEST GK" -%}{%- assign nav_sec = "povijest" -%}
+  {%- elsif page.type == "Zaposlenje" -%}{%- assign nav_sec = "zaposlenje" -%}
+  {%- elsif page.event_date -%}{%- assign nav_sec = "dogadaji" -%}
+  {%- else -%}{%- assign nav_sec = "vijesti" -%}{%- endif -%}
+{%- endif -%}
+<body class="has-bottom-nav">
+  <a class="skip-link" href="#sadrzaj">Preskoči na sadržaj</a>
+  <header class="tp-header" id="site-header">
+    <div class="tp-bar">
+      <a href="{{ '/' | relative_url }}" class="tp-logo" aria-label="Gorski Kotar Info – naslovnica">
+        <span class="tp-logo-icon" aria-hidden="true">🌲</span>
+        <span class="tp-logo-text">GORSKI KOTAR INFO</span>
+        <span class="tp-test" title="Testna kopija portala">TEST</span>
+      </a>
+      <a class="tp-icon" href="{{ '/pretraga/' | relative_url }}" aria-label="Pretraga">🔍</a>
+      <button type="button" class="tp-burger" id="tp-burger" aria-expanded="false" aria-controls="tp-drawer" aria-label="Otvori izbornik">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="tp-chips" aria-label="Kategorije">
+      {%- for b in site.data.kategorije.naslovnica_blokovi %}{% if b.id == "kultura" or b.id == "drustvo" %}{% continue %}{% endif %}
+      <a class="tp-chip" href="{{ '/' | relative_url }}#blok-{{ b.id }}">{{ b.naslov }}</a>
+      {%- endfor %}
+      <a class="tp-chip" href="{{ '/kalendar/' | relative_url }}">📅 Kalendar</a>
+      <a class="tp-chip" href="{{ '/zaposlenje/' | relative_url }}">💼 Zaposlenje</a>
+      {%- for k in site.data.kategorije.lokacije %}
+      <a class="tp-chip tp-chip-loc" href="{{ '/kategorije/' | append: k.slug | append: '/' | relative_url }}">{{ k.name }}</a>
+      {%- endfor %}
+    </nav>
+  </header>
+  <div class="tp-drawer-bg" id="tp-drawer-bg" hidden></div>
+  <aside class="tp-drawer" id="tp-drawer" aria-label="Izbornik" hidden>
+    <div class="tp-drawer-head"><strong>Izbornik</strong><button type="button" id="tp-close" aria-label="Zatvori izbornik">✕</button></div>
+    <nav class="tp-drawer-nav">
+      {%- for item in site.nav %}<a href="{{ item.url | relative_url }}">{{ item.title }}</a>{% endfor %}
+    </nav>
+    <h3>Rubrike</h3>
+    <nav class="tp-drawer-grid">
+      {%- for k in site.data.kategorije.vrste %}<a href="{{ '/kategorije/' | append: k.slug | append: '/' | relative_url }}">{{ k.name }}</a>{% endfor %}
+    </nav>
+    <h3>Mjesta</h3>
+    <nav class="tp-drawer-grid">
+      {%- for k in site.data.kategorije.lokacije %}<a href="{{ '/kategorije/' | append: k.slug | append: '/' | relative_url }}">{{ k.name }}</a>{% endfor %}
+    </nav>
+  </aside>
+  {% if page.url == "/" %}{% include prijelomna-traka.html %}{% endif %}
+
+  <main class="container" id="sadrzaj">
+    {% if page.layout == 'post' or page.sidebar %}
+    <div class="with-sidebar">
+      <div class="main-col">
+        {{ content }}
+      </div>
+      {% include sidebar.html %}
+    </div>
+    {% else %}
+    {{ content }}
+    {% endif %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon" aria-hidden="true">🌲</span>
+        <div>
+          <strong>{{ site.title }}</strong>
+          <p>{{ site.tagline | default: site.description }}</p>
+        </div>
+      </div>
+      <nav class="footer-nav" aria-label="Podnožje">
+        {%- for item in site.nav %}<a href="{{ item.url | relative_url }}">{{ item.title }}</a>{% endfor %}
+      </nav>
+      <p class="footer-copy">&copy; {{ 'now' | date: '%Y' }} {{ site.title }} · {{ site.tagline | default: site.description }}</p>
+    </div>
+  </footer>
+
+  <nav class="bottom-nav" aria-label="Brza navigacija">
+    <a href="{{ '/' | relative_url }}"{% if nav_sec == "vijesti" %} class="active" aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h13v14H6a2 2 0 0 1-2-2V5z"/><path d="M17 9h3v8a2 2 0 0 1-2 2"/><path d="M7 9h7M7 12.5h7M7 16h4"/></svg>
+      <span>Vijesti</span>
+    </a>
+    <a href="{{ '/dogadaji/' | relative_url }}"{% if nav_sec == "dogadaji" %} class="active" aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+      <span>Događanja</span>
+    </a>
+    <a href="{{ '/kategorije/' | relative_url }}"{% if nav_sec == "kategorije" %} class="active" aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>
+      <span>Kategorije</span>
+    </a>
+    <a href="{{ '/pretraga/' | relative_url }}"{% if nav_sec == "trazi" %} class="active" aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <span>Traži</span>
+    </a>
+    <a href="{{ '/povijest/' | relative_url }}"{% if nav_sec == "povijest" %} class="active" aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/><path d="M12 8v4.5l3 2"/></svg>
+      <span>Povijest</span>
+    </a>
+  </nav>
+
+  <script>
+  (function () {
+    var header = document.getElementById('site-header');
+    var btn = document.getElementById('menu-toggle');
+    if (!header || !btn) return;
+    function setOpen(open) {
+      header.classList.toggle('menu-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Zatvori izbornik' : 'Otvori izbornik');
+    }
+    btn.addEventListener('click', function () { setOpen(!header.classList.contains('menu-open')); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && header.classList.contains('menu-open')) { setOpen(false); btn.focus(); }
+    });
+    header.querySelectorAll('.main-nav a, .cat-link').forEach(function (a) {
+      a.addEventListener('click', function () { setOpen(false); });
+    });
+    window.addEventListener('resize', function () { if (window.innerWidth >= 900) setOpen(false); });
+  })();
+  </script>
+  <script>window.SITE_BASE = {{ site.baseurl | jsonify }};</script>
+  <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/js/kategorije.js' | relative_url }}" defer></script>
+<script>
+  /* prijelomna vijest: sakrij traku/oznake nakon `prijelomna_do` */
+  (function () { var now = Date.now() / 1000; document.querySelectorAll('[data-prijelomna-do]').forEach(function (e) { if (now > +e.dataset.prijelomnaDo) e.hidden = true; }); })();
+</script>
+  {% include goatcounter.html %}
+  <script>
+  (function(){var b=document.getElementById('tp-burger'),d=document.getElementById('tp-drawer'),bg=document.getElementById('tp-drawer-bg'),c=document.getElementById('tp-close');
+  function set(o){d.hidden=!o;bg.hidden=!o;b.setAttribute('aria-expanded',o);document.body.classList.toggle('tp-noscroll',o);}
+  b.addEventListener('click',function(){set(d.hidden);});c.addEventListener('click',function(){set(false);});bg.addEventListener('click',function(){set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});})();
+  </script>
+</body>
+</html>

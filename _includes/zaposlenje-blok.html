@@ -1,0 +1,21 @@
+{%- comment -%}
+Zaseban blok ZAPOSLENJE na naslovnici: 1–2 izdvojena oglasa (istaknuti_oglasi) iz najnovijeg članka vrste Zaposlenje.
+{%- endcomment -%}
+{%- assign zb_post = site.posts | where: "type", "Zaposlenje" | first -%}
+<section class="zaposlenje-blok" id="zaposlenje-blok" aria-labelledby="zaposlenje-blok-naslov">
+  <div class="zb-head">
+    <h2 id="zaposlenje-blok-naslov"><span aria-hidden="true">💼</span> Zaposlenje</h2>
+    <a class="zb-all" href="{{ '/zaposlenje/' | relative_url }}">Svi oglasi →</a>
+  </div>
+  {%- if zb_post %}
+    {%- if zb_post.istaknuti_oglasi %}
+      {% include istaknuti-oglasi.html post=zb_post limit=2 %}
+    {%- endif %}
+    <a class="zb-post" href="{{ zb_post.url | relative_url }}">
+      <span class="zb-post-label">{% if zb_post.broj_oglasa %}{{ zb_post.broj_oglasa }} aktualnih oglasa u Gorskom kotaru{% else %}Aktualni oglasi u Gorskom kotaru{% endif %} · {% include datum.html date=zb_post.date show_time=false %}</span>
+      <span class="zb-post-title">{{ zb_post.title }}</span>
+    </a>
+  {%- else %}
+    <p class="zb-empty">Prvi pregled oglasa za posao uskoro.</p>
+  {%- endif %}
+</section>

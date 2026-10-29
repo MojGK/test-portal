@@ -1,0 +1,65 @@
+# Oglasi u bočnoj traci (sidebar).
+# active: false privremeno skriva oglas. Podaci su preuzeti sa stranice oglašivača.
+goring:
+  active: true
+  name: "Goring d.o.o."
+  place: "Ravna Gora"
+  logo: /assets/images/oglasi/goring-logo.svg
+  logo_alt: "Logo Goring d.o.o. Ravna Gora"
+  description: "Projektiranje, niskogradnja i nadzor za stambene i infrastrukturne projekte."
+  slogan: "Vrhunska kvaliteta, stručnost i pravovremena realizacija."
+  phone: "+385 98 257 065"
+  email: "goringinfo@gmail.com"
+  url: "https://goringdoo.eu/"
+  button: "Posjetite stranicu"
+
+# Mali oglas (kompaktna traka): na mobilnoj naslovnici između kategorijskih blokova
+# (iza bloka iz `mobilno_iza`), na desktopu u bočnoj traci ispod oglasa Goring.
+# banner: false = ne ide u veliki vodoravni banner na naslovnici.
+shamrock:
+  active: true
+  mali: true
+  banner: false
+  name: "Shamrock Pub"
+  place: "Ravna Gora"
+  logo: /assets/images/oglasi/shamrock-pub-ravna-gora.jpg
+  logo_alt: "Logo Shamrock Pub Ravna Gora"
+  text: "Prati nas na Instagramu"
+  url: "https://www.instagram.com/pub_ravnagora/"
+  mobilno_iza: sport
+
+# Mali oglas: Caffe bar Tiffany, Delnice (logo = profilna slika s Instagrama).
+# sidebar: dolje = u bočnoj traci niže (ispod okvira „Mjesta“), da mali oglasi ne stoje jedan uz drugi.
+tiffany:
+  active: true
+  mali: true
+  banner: false
+  name: "Caffe bar Tiffany"
+  place: "Delnice"
+  logo: /assets/images/oglasi/tiffany-delnice.jpg
+  logo_alt: "Logo Caffe bar Tiffany Delnice"
+  text: "Prati nas na Instagramu"
+  url: "https://www.instagram.com/cb_tiffany_delnice/"
+  mobilno_iza: poslovi-opcine
+  sidebar: dolje
+
+# Veliki oglas bez gornjeg bannera: na mobilnoj naslovnici kao banner među blokovima (iza `mobilno_iza`),
+# na desktop naslovnici u bočnoj traci (gore je banner Goring); na ostalim stranicama bočna traka
+# izmjenjuje velike oglase (Goring / Breza) ovisno o stranici. Podaci sa https://breza-rg.hr/
+breza:
+  active: true
+  banner: false
+  name: "Restoran & smještaj Breza"
+  place: "Ravna Gora"
+  logo: /assets/images/oglasi/breza-logo.png
+  logo_alt: "Logo Breza – goranska kuhinja, Ravna Gora"
+  logo_sirok: true
+  foto: /assets/images/oglasi/breza-ravna-gora.jpg
+  foto_alt: "Restoran i smještaj Breza u Ravnoj Gori, pogled iz zraka"
+  description: "Autentična goranska kuhinja – divljač, šumske gljive, umak od domaćih borovnica – i 30 soba za odmor, poslovni boravak i sportske pripreme."
+  banner_text: "Goranska kuhinja od 1976. – divljač, šumske gljive i domaće borovnice – te 30 soba za odmor i događanja."
+  slogan: "Radno vrijeme: svaki dan 8 – 22 h"
+  phone: "+385 95 510 5129"
+  url: "https://breza-rg.hr/"
+  button: "Posjetite stranicu"
+  mobilno_iza: dogadanja

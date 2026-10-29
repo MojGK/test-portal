@@ -1,0 +1,82 @@
+{%- comment -%}
+Komentari BEZ registracije (ime + komentar). Sustav se bira u _config.yml:
+  komentari:
+    sustav: htmlcommentbox   # htmlcommentbox | cusdis | giscus
+    hcb_mod: ""              # moderatorski ključ s htmlcommentbox.com (vrijednost mod=... iz njihovog koda)
+  cusdis_app_id: ""          # kad je postavljen i sustav: cusdis, koristi se Cusdis
+Komentari su vezani uz stalnu adresu članka (site.url + baseurl + page.url), ne uz trenutačni URL s parametrima.
+{%- endcomment -%}
+{%- assign k_cfg = site.komentari -%}
+{%- assign k_sys = k_cfg.sustav | default: "htmlcommentbox" -%}
+{%- if site.komentari.hcb_url_baza -%}{%- assign k_url = site.komentari.hcb_url_baza | append: page.url -%}{%- else -%}{%- assign k_url = page.url | absolute_url -%}{%- endif -%}
+{%- if k_sys == "cusdis" and site.cusdis_app_id and site.cusdis_app_id != "" %}
+<div class="komentari-box komentari-cusdis">
+  <div id="cusdis_thread"
+       data-host="{{ site.cusdis_host | default: 'https://cusdis.com' }}"
+       data-app-id="{{ site.cusdis_app_id }}"
+       data-page-id="{{ page.url }}"
+       data-page-url="{{ k_url }}"
+       data-page-title="{{ page.title | escape }}"
+       data-theme="light"></div>
+  <script>
+    window.CUSDIS_LOCALE = {
+      powered_by: 'Komentari: Cusdis', post_comment: 'Objavi komentar', loading: 'Učitavam…',
+      email: 'E-pošta (neobavezno)', nickname: 'Ime', reply_placeholder: 'Vaš komentar…', reply_btn: 'Odgovori',
+      sending: 'Šaljem…', mod_badge: 'urednik', content_is_required: 'Upišite komentar.',
+      nickname_is_required: 'Upišite ime.', comment_has_been_sent: 'Hvala! Komentar će se pojaviti nakon odobrenja.'
+    };
+  </script>
+  <script async defer src="{{ site.cusdis_host | default: 'https://cusdis.com' }}/js/cusdis.es.js"></script>
+  <noscript><p class="komentari-note">Za komentiranje je potreban JavaScript.</p></noscript>
+</div>
+{%- elsif k_sys == "htmlcommentbox" or k_sys == "cusdis" %}
+<div class="komentari-box komentari-hcb">
+  <p class="komentari-note">Komentirajte bez registracije – dovoljni su ime i komentar. Molimo pristojnu raspravu; uvredljivi komentari bit će uklonjeni.</p>
+  <div id="HCB_comment_box"><a href="https://www.htmlcommentbox.com" rel="nofollow noopener">Učitavam komentare…</a></div>
+  <script id="hcb">
+  /*<!--*/
+  window.hcb_user = {
+    PAGE: {{ k_url | jsonify }},
+    comments_header: 'Napišite komentar', name_label: 'Ime', content_label: 'Vaš komentar…', submit: 'Objavi komentar',
+    no_comments_msg: 'Još nema komentara. Budite prvi!', add: 'Dodaj komentar', again: 'Napiši još jedan komentar',
+    said: 'kaže:', reply: 'Odgovori', flag: 'Prijavi', like: 'Sviđa mi se', anonymous: 'Anonimno', mod_label: '(urednik)',
+    website_label: 'web (neobavezno)', email_label: 'e-pošta', subscribe: 'Obavijesti me o odgovorima', add_image: 'Dodaj sliku',
+    are_you_sure: 'Želite li prijaviti ovaj komentar kao neprimjeren?', showing: 'Prikaz', to: 'do',
+    days_ago: 'dana', hours_ago: 'sati', minutes_ago: 'minuta', within_the_last_minute: 'upravo sada',
+    msg_thankyou: 'Hvala na komentaru!', msg_approval: 'NAPOMENA: komentar će biti objavljen nakon odobrenja.',
+    msg_approval_required: 'Hvala! Komentar će se pojaviti kad ga urednik odobri.',
+    err_bad_html: 'Komentar sadrži nedopušteni HTML.', err_bad_email: 'Upišite ispravnu adresu e-pošte.',
+    err_too_frequent: 'Pričekajte nekoliko sekundi između komentara.', err_comment_empty: 'Komentar je prazan.',
+    err_denied: 'Komentar nije prihvaćen.', err_unknown: 'Komentar nije objavljen zbog nepoznate greške.',
+    err_spam: 'Komentar je prepoznat kao spam.', err_blocked: 'Komentar je blokiran pravilima stranice.',
+    RELATIVE_DATES: false
+  };
+  (function () {
+    var s = document.createElement('script'), h = 'https://www.htmlcommentbox.com';
+    s.src = h + '/jread?page=' + encodeURIComponent(window.hcb_user.PAGE).replace('+', '%2B')
+      {% if k_cfg.hcb_mod and k_cfg.hcb_mod != "" %}+ '&mod=' + {{ k_cfg.hcb_mod | url_encode | jsonify }}{% endif %}
+      + '&opts={{ k_cfg.hcb_opts | default: 16404 }}&num=20&ts=' + Date.now();
+    s.onerror = function () {
+      var b = document.getElementById('HCB_comment_box');
+      if (b) b.innerHTML = '<p class="komentari-note">Komentari se trenutačno ne mogu učitati. Pokušajte kasnije.</p>';
+    };
+    document.head.appendChild(s);
+    // oznake i placeholderi za polja (HCB ih sam ne prikazuje)
+    var box = document.getElementById('HCB_comment_box');
+    function polish() {
+      var n = document.getElementById('hcb_form_name'), c = document.getElementById('hcb_form_content');
+      if (!n || !c) return false;
+      n.placeholder = 'Vaše ime'; n.setAttribute('aria-label', 'Ime'); n.setAttribute('maxlength', '60'); n.required = true;
+      c.placeholder = 'Vaš komentar…'; c.setAttribute('aria-label', 'Komentar');
+      return true;
+    }
+    if (box && window.MutationObserver) {
+      var mo = new MutationObserver(function () { polish(); });
+      mo.observe(box, { childList: true, subtree: true });
+    }
+  })();
+  /*-->*/
+  </script>
+  <noscript><p class="komentari-note">Za komentiranje je potreban JavaScript.</p></noscript>
+</div>
+{%- endif -%}

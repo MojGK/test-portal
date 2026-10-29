@@ -1,0 +1,66 @@
+title: "TEST PORTAL – Gorski Kotar Info"
+description: Vijesti iz srca prirode
+tagline: Vijesti iz srca prirode
+baseurl: "/test-portal"
+url: "https://mojgk.github.io"
+theme: null
+markdown: kramdown
+permalink: /:title/
+timezone: Europe/Zagreb
+
+# Navigation
+nav:
+  - title: Početna
+    url: /
+  - title: Događaji
+    url: /dogadaji/
+  - title: Kalendar
+    url: /kalendar/
+  - title: Kategorije
+    url: /kategorije/
+  - title: Povijest
+    url: /povijest/
+  - title: Zaposlenje
+    url: /zaposlenje/
+  - title: Pretraga
+    url: /pretraga/
+
+# Author
+author:
+  name: Gorski Kotar Info
+  bio: Gorski Kotar Info – vijesti iz srca prirode.
+
+# Komentari bez registracije (vidi _includes/komentari.html)
+komentari:
+  sustav: iskljuceno   # TEST: komentari isključeni; htmlcommentbox | cusdis | giscus
+  hcb_mod: ""              # moderatorski ključ s htmlcommentbox.com (vrijednost iza mod= u njihovom kodu)
+  hcb_opts: 16404          # 16 filtar psovki + 4 datum + 16384 odgovori
+  hcb_url_baza: "https://mojgk.github.io/moj-gorski-kotar"  # stara adresa: komentari ostaju vezani uz nju nakon preimenovanja
+  giscus_rezerva: false     # stari Giscus (GitHub prijava) ostaje kao sklopiva rezerva
+cusdis_app_id: ""          # App ID s cusdis.com (kad se postavi, promijeni sustav u: cusdis)
+cusdis_host: "https://cusdis.com"
+
+# Ankete (_includes/anketa.html): besplatni javni brojači bez prijave, s CORS-om.
+# {kljuc} = <id ankete>-o<redni broj odgovora>. Ako glavni servis ne odgovori u timeout_ms,
+# koristi se rezerva; ako ne rade oba, anketa ispiše poruku umjesto da šuti.
+# timeout_ms vrijedi za sve servise; servis ga može nadjačati svojim timeout_ms.
+ankete:
+  timeout_ms: 4000
+  servis:
+    naziv: countapi
+    get: "https://countapi.mileshilliard.com/api/v1/get/mojgk-testportal-{kljuc}"
+    hit: "https://countapi.mileshilliard.com/api/v1/hit/mojgk-testportal-{kljuc}"
+  rezerva:
+    naziv: abacus
+    get: "https://abacus.jasoncameron.dev/get/mojgk-testportal/{kljuc}"
+    hit: "https://abacus.jasoncameron.dev/hit/mojgk-testportal/{kljuc}"
+    timeout_ms: 8000   # Abacus je spor (5–8 s kad radi), pa mu treba dulji rok
+
+# Kontakt za oglašavanje (placeholder bannera kad nema aktivnog oglasa); prazno = bez gumba
+oglasi_kontakt: ""
+
+# Brojač posjeta GoatCounter (_includes/goatcounter.html). Upiši kod računa, npr. goatcounter: mojgk
+# (→ https://mojgk.goatcounter.com/count). Prazno = brojač isključen.
+goatcounter: ""   # TEST: brojač isključen
+
+exclude: [README.md]

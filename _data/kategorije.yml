@@ -1,0 +1,124 @@
+# Popis kategorija portala Gorski Kotar Info.
+# Novu kategoriju dodaj ovdje (name = točan naziv koji se piše u front matter, slug = sidro/filter bez dijakritika).
+# U članku koristi:
+#   location: Delnice
+#   type: Crna kronika
+#   categories: [Delnice, Crna kronika]
+
+lokacije:
+  - name: Delnice
+    slug: delnice
+  - name: Fužine
+    slug: fuzine
+  - name: Lokve
+    slug: lokve
+  - name: Mrkopalj
+    slug: mrkopalj
+  - name: Čabar
+    slug: cabar
+  - name: Skrad
+    slug: skrad
+  - name: Ravna Gora
+    slug: ravna-gora
+  # dodatne lokacije
+  - name: Vrbovsko
+    slug: vrbovsko
+  - name: Brod Moravice
+    slug: brod-moravice
+  - name: Gorski kotar
+    slug: gorski-kotar
+
+vrste:
+  - name: Događanja
+    slug: dogadanja
+  - name: Crna kronika
+    slug: crna-kronika
+  - name: Sport
+    slug: sport
+  - name: Priroda
+    slug: priroda
+  - name: Promet
+    slug: promet
+  - name: Kultura
+    slug: kultura
+  - name: Zanimljivosti
+    slug: zanimljivosti
+  - name: Povijest
+    slug: povijest
+  # natječaji, javni pozivi, savjetovanja, prodaja/zakup čestica, komunalne naknade,
+  # prostorni planovi, proračun, odluke vijeća i slične obavijesti općina i gradova
+  - name: Općinske vijesti
+    slug: opcinske-vijesti
+  # stanovništvo, demografija, iseljavanje, obitelj, socijalne teme i analize
+  - name: Društvo
+    slug: drustvo
+  # tjedni pregled oglasa za posao u Gorskom kotaru (stranica /zaposlenje/)
+  - name: Zaposlenje
+    slug: zaposlenje
+  # aktualne vijesti koje ne spadaju u druge rubrike (npr. revizije, istrage, veće javne teme); ide u blok VIJESTI
+  - name: Aktualno
+    slug: aktualno
+  # tjedni sažetak 5 najvažnijih vijesti s poveznicama na naše članke (predložak: _drafts/predlozak-pregled-tjedna.md)
+  - name: Pregled tjedna
+    slug: pregled-tjedna
+
+# Serijali – tematske serije članaka koje idu uz mjesto i vrstu.
+# Članak je u serijalu ako mu `categories` sadrži točan naziv, npr.
+#   categories: [Fužine, Povijest, POVIJEST GK]
+serijali:
+  - name: POVIJEST GK
+    slug: povijest-gk
+    opis: Serijal o povijesti Gorskog kotara – mjesta, ljudi i priče iz prošlosti.
+
+# Rubrika "Izdvojeno" na naslovnici: 1 udarna vijest + po jedna vijest iz svake grupe mjesta
+# (svaka iz drugog mjesta). Udarna je najnoviji članak s `istaknuto: true` u front matteru,
+# a ako takvog nema, najnoviji članak koji nije u heroju. Ako grupa nema članak, uzima se
+# najnoviji članak iz nekog drugog, još neiskorištenog mjesta.
+izdvojeno_grupe:
+  - [Delnice]
+  - [Fužine]
+  - [Lokve, Čabar]
+  - [Mrkopalj, Ravna Gora]
+  - [Vrbovsko, Gorski kotar]
+
+# Kategorijski blokovi na MOBILNOJ naslovnici (redoslijed = redoslijed na stranici).
+# vrste: popis vrsta (type) koje idu u blok; ostale: true = sve vrste koje nisu ni u jednom
+# drugom bloku (osim Zaposlenja, koje ima svoj blok). Blok bez članaka se ne prikazuje.
+# Svaki blok: 1 veća vijest + do 3 kompaktne; glavna vijest (hero) se ne ponavlja.
+naslovnica_blokovi:
+  - naslov: Vijesti
+    id: vijesti
+    ostale: true          # sve vrste koje nisu u drugim blokovima (trenutno: Aktualno, Promet, Priroda)
+    vise: /vijesti/
+  - naslov: Poslovi općine
+    id: poslovi-opcine
+    vrste: [Općinske vijesti]
+    vise: /?kategorija=opcinske-vijesti
+  - naslov: Zanimljivosti
+    id: zanimljivosti
+    vrste: [Zanimljivosti]
+    vise: /?kategorija=zanimljivosti
+  - naslov: Događanja
+    id: dogadanja
+    vrste: [Događanja]
+    vise: /dogadaji/
+  - naslov: Sport
+    id: sport
+    vrste: [Sport]
+    vise: /?kategorija=sport
+  - naslov: Crna kronika
+    id: crna-kronika
+    vrste: [Crna kronika]
+    vise: /?kategorija=crna-kronika
+  - naslov: Kultura
+    id: kultura
+    vrste: [Kultura]
+    vise: /?kategorija=kultura
+  - naslov: Društvo
+    id: drustvo
+    vrste: [Društvo]
+    vise: /?kategorija=drustvo
+  - naslov: Povijest GK
+    id: povijest-gk
+    vrste: [Povijest]
+    vise: /povijest/
